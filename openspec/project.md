@@ -32,6 +32,8 @@ The goal is to create a reusable authentication service that other projects can 
 - **Python:** Follow PEP 8 with Black formatting (88 character line length)
 - **Import Organization:** Use isort with Black profile
 - **Type Hints:** Mandatory for all functions and methods (enforced by mypy)
+- **Logging:** Use standard logging module with structured logs
+- **Parameter:** One parameter per line for functions with multiple parameters, must have trailing comma, and type hints for each parameter
 - **Naming Conventions:**
   - CamelCase for variables
   - UpperCamelCase for functions, methods, classes.
