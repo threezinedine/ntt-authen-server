@@ -1,0 +1,20 @@
+{
+    "name": "ntt-server-middleware",
+    "version": "1.0.0",
+    "description": "NTT Authentication Server Middleware",
+    "types": "@types/ntt-server-middleware/index.d.ts",
+    "main": "main.js",
+    "exports": {
+        ".": "./ntt_server"
+    },
+    "author": {
+        "name": "threezinedine",
+        "email": "threezinedine@gmail.com"
+    },
+    "keywords": [
+        "server",
+        "express",
+        "middleware"
+    ],
+    "license": "MIT"
+}
