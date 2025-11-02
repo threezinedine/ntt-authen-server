@@ -1,0 +1,21 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ntt-authen-server"
+version = "0.1.0"
+description = "Authentication server for NTT application"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+authors = [
+    {name = "threezinedine", email = "threezinedine@gmail.com"}
+]
+
+dependencies = [
+    "fastapi[all]",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/threezinedine/ntt-authen-server"
