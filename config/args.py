@@ -24,9 +24,15 @@ class ArgConfig:
             help="Run the test suite (not implemented yet)",
         )
 
-        subparsers.add_parser(
+        installParser = subparsers.add_parser(
             "install",
             help="Install project dependencies (not implemented yet)",
+        )
+
+        installParser.add_argument(
+            "dependencies",
+            nargs="+",
+            help="List of dependencies to install",
         )
 
         subparsers.add_parser(
@@ -46,3 +52,9 @@ class ArgConfig:
         - build: Build the project for production (not implemented yet)
         """
         return self._args.command
+
+    @property
+    def Dependencies(self) -> list[str] | None:
+        if self.Command == "install":
+            return self._args.dependencies
+        return None
