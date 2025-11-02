@@ -17,5 +17,8 @@ dependencies = [
     "fastapi[all]",
 ]
 
+[tool.hatch.build.targets.wheel]
+include = ["server/**"]
+
 [project.urls]
 "Homepage" = "https://github.com/threezinedine/ntt-authen-server"
