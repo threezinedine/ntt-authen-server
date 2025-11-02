@@ -1,0 +1,11 @@
+{
+    "name": "ntt-server-middleware",
+    "version": "1.0.0",
+    "description": "Middleware server for NTT authentication",
+    "main": "ntt-server-middleware/index.js",
+    "types": "ntt-server-middleware/index.d.ts",
+    "author": {
+        "name": "threezinedine",
+        "email": "threezinedine@gmail.com"
+    }
+}
