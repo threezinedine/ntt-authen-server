@@ -5,7 +5,7 @@ from config.utils import InstallDependencies, InstallNewDependencies, RunServer
 def main() -> None:
     arg_config = ArgConfig()
 
-    InstallDependencies("server")
+    InstallDependencies("ntt_server")
 
     if arg_config.Command == "run":
         RunServer()
@@ -14,7 +14,7 @@ def main() -> None:
         assert (
             dependencies is not None
         ), "Dependencies should not be None for install command"
-        InstallNewDependencies(dependencies, "server")
+        InstallNewDependencies(dependencies, "ntt_server")
 
 
 if __name__ == "__main__":

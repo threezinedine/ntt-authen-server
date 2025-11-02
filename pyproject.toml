@@ -18,7 +18,7 @@ dependencies = [
 ]
 
 [tool.hatch.build.targets.wheel]
-include = ["server/**"]
+include = ["ntt_server/**"]
 
 [project.urls]
 "Homepage" = "https://github.com/threezinedine/ntt-authen-server"

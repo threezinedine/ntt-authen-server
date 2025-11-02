@@ -167,4 +167,4 @@ def RunServer() -> None:
     """
     Run the FastAPI development server with auto-reload.
     """
-    RunCommand(f"{PYTHON_EXECUTABLE} server.py", folder="server")
+    RunCommand(f"{PYTHON_EXECUTABLE} server.py", folder="ntt_server")

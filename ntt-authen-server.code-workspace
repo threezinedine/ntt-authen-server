@@ -1,8 +1,8 @@
 {
     "folders": [
         {
-            "name": "server",
-            "path": "server"
+            "name": "ntt_server",
+            "path": "ntt_server"
         },
         {
             "name": "ntt-authen-server",
