@@ -19,10 +19,12 @@ class ArgConfig:
             help="Start the development server with auto-reload",
         )
 
-        subparsers.add_parser(
+        testParser = subparsers.add_parser(
             "test",
             help="Run the test suite (not implemented yet)",
         )
+
+        testParser.add_argument("-f", "--filter", default=None)
 
         installParser = subparsers.add_parser(
             "install",

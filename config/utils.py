@@ -1,5 +1,6 @@
 import os
 import subprocess
+from typing import Any
 
 from .logger import logger
 
@@ -168,3 +169,22 @@ def RunServer() -> None:
     Run the FastAPI development server with auto-reload.
     """
     RunCommand(f"{PYTHON_EXECUTABLE} server.py", folder="ntt_server")
+
+
+def RunTests(
+    filter: str | None = None,
+    **kwargs: Any,
+) -> None:
+    """
+    Run the test suite.
+
+    Parameters
+    ----------
+    filter : str
+        A filter to select specific tests to run.
+    """
+    command = f"{PYTHON_EXECUTABLE} -m pytest"
+    if filter:
+        command += f" -k {filter}"
+
+    RunCommand(command, folder="ntt_server")

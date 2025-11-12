@@ -1,5 +1,10 @@
 from config.args import ArgConfig
-from config.utils import InstallDependencies, InstallNewDependencies, RunServer
+from config.utils import (
+    InstallDependencies,
+    InstallNewDependencies,
+    RunServer,
+    RunTests,
+)
 
 
 def main() -> None:
@@ -15,6 +20,8 @@ def main() -> None:
             dependencies is not None
         ), "Dependencies should not be None for install command"
         InstallNewDependencies(dependencies, "ntt_server")
+    elif arg_config.Command == "test":
+        RunTests()
 
 
 if __name__ == "__main__":
