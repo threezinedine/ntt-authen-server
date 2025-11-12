@@ -1,4 +1,6 @@
 from fastapi import FastAPI
+import logging
+from app.core import settings
 
 app = FastAPI()
 
@@ -11,7 +13,12 @@ async def read_root():
 def main():
     import uvicorn
 
-    uvicorn.run("server:app", host="localhost", port=8000, reload=True)
+    if settings.MODE == "development":
+        logging.info("Starting server in development mode")
+        uvicorn.run("server:app", host="localhost", port=8000, reload=True)
+    else:
+        logging.info("Starting server in production mode")
+        uvicorn.run("server:app", host="0.0.0.0", port=8000)
 
 
 if __name__ == "__main__":

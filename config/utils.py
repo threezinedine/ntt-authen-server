@@ -18,7 +18,7 @@ def DetectPythonCommand() -> str:
 
     try:
         RunCommand("python --version", shell=False)
-    except Exception as e:
+    except:
         pythonCommand = "python3"
 
     return pythonCommand
@@ -109,7 +109,10 @@ def RunCommand(
     )
 
 
-def InstallNewDependencies(dependencies: list[str], folder: str) -> None:
+def InstallNewDependencies(
+    dependencies: list[str],
+    **kwargs: Any,
+) -> None:
     """
     Install new dependencies using pip.
 
@@ -117,10 +120,9 @@ def InstallNewDependencies(dependencies: list[str], folder: str) -> None:
     ----------
     dependencies : list[str]
         A list of dependencies to install.
-
-    folder : str
-        The folder where the dependencies should be installed (relative path to source dir).
     """
+    folder = "ntt_server"
+
     logger.info(f"Installing new dependencies: {' '.join(dependencies)}")
     RunCommand(
         f"{PYTHON_EXECUTABLE} -m pip install {' '.join(dependencies)}", folder=folder
@@ -164,10 +166,25 @@ def InstallDependencies(folder: str) -> None:
     CacheFileStamp(os.path.join(folder, "requirements.txt"))
 
 
-def RunServer() -> None:
+def RunServer(type: str = "dev", **kwargs: Any) -> None:
     """
     Run the FastAPI development server with auto-reload.
+
+    Parameters
+    ----------
+    type : str
+        'dev' for development server with auto-reload or 'prod' for production server.
     """
+    setupCommand = ""
+
+    assert type in ("dev", "prod"), "Invalid server type. Use 'dev' or 'prod'."
+
+    if os.name == "nt":
+        setupCommand = f"copy .{type}.env .env"
+    else:
+        setupCommand = f"cp .{type}.env .env"
+
+    RunCommand(setupCommand, folder="ntt_server")
     RunCommand(f"{PYTHON_EXECUTABLE} server.py", folder="ntt_server")
 
 

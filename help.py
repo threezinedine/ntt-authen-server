@@ -13,15 +13,15 @@ def main() -> None:
     InstallDependencies("ntt_server")
 
     if arg_config.Command == "run":
-        RunServer()
+        RunServer(**arg_config.ToDict())
     elif arg_config.Command == "install":
         dependencies = arg_config.Dependencies
         assert (
             dependencies is not None
         ), "Dependencies should not be None for install command"
-        InstallNewDependencies(dependencies, "ntt_server")
+        InstallNewDependencies(**arg_config.ToDict())
     elif arg_config.Command == "test":
-        RunTests()
+        RunTests(**arg_config.ToDict())
 
 
 if __name__ == "__main__":

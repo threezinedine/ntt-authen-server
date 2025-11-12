@@ -1,4 +1,5 @@
 from argparse import ArgumentParser
+from typing import Any
 
 
 class ArgConfig:
@@ -14,9 +15,17 @@ class ArgConfig:
             required=True,
         )
 
-        subparsers.add_parser(
+        runParser = subparsers.add_parser(
             "run",
             help="Start the development server with auto-reload",
+        )
+
+        runParser.add_argument(
+            "-t",
+            "--type",
+            default="dev",
+            choices=["dev", "prod"],
+            help="Type of server to run: 'dev' for development with auto-reload, 'prod' for production",
         )
 
         testParser = subparsers.add_parser(
@@ -55,8 +64,5 @@ class ArgConfig:
         """
         return self._args.command
 
-    @property
-    def Dependencies(self) -> list[str] | None:
-        if self.Command == "install":
-            return self._args.dependencies
-        return None
+    def ToDict(self) -> dict[str, Any]:
+        return vars(self._args)
