@@ -15,10 +15,6 @@ def main() -> None:
     if arg_config.Command == "run":
         RunServer(**arg_config.ToDict())
     elif arg_config.Command == "install":
-        dependencies = arg_config.Dependencies
-        assert (
-            dependencies is not None
-        ), "Dependencies should not be None for install command"
         InstallNewDependencies(**arg_config.ToDict())
     elif arg_config.Command == "test":
         RunTests(**arg_config.ToDict())
