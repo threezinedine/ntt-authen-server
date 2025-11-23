@@ -38,6 +38,14 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
+from app.middlewares import LoggingMiddleware
+
+app.add_middleware(LoggingMiddleware)
+
+from app.api.user import router as UserRouter
+
+app.include_router(UserRouter)
+
 
 @app.get("/")
 async def read_root():
@@ -50,8 +58,8 @@ def main():
     if settings.MODE == "development":
         uvicorn.run(
             "server:app",
-            host="localhost",
-            port=8000,
+            host=f"{settings.HOST}",
+            port=settings.PORT,
             reload=True,
             log_config=None,
             timeout_graceful_shutdown=5,
@@ -59,8 +67,8 @@ def main():
     else:
         uvicorn.run(
             "server:app",
-            host="0.0.0.0",
-            port=8000,
+            host=f"{settings.HOST}",
+            port=settings.PORT,
             log_config=None,
             timeout_graceful_shutdown=5,
         )

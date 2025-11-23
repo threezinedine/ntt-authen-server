@@ -7,6 +7,8 @@ class ServerSettings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int
     LOG_FILE: str
     MODE: str
+    HOST: str
+    PORT: int
 
     class Config:
         env_file = ".env"
