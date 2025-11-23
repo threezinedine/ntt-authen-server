@@ -200,6 +200,15 @@ def RunTests(
     filter : str
         A filter to select specific tests to run.
     """
+    setupCommand = ""
+
+    if os.name == "nt":
+        setupCommand = f"copy .test.env .env"
+    else:
+        setupCommand = f"cp .test.env .env"
+
+    RunCommand(setupCommand, folder="ntt_server")
+
     command = f"{PYTHON_EXECUTABLE} -m pytest"
     if filter:
         command += f" -k {filter}"
