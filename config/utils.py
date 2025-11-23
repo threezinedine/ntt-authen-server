@@ -39,7 +39,27 @@ def DetectPythonExecutable() -> str:
         return os.path.join("venv", "bin", "python3")
 
 
-from .constants import PYTHON_COMMAND, PYTHON_EXECUTABLE
+def DetectAlembicExecutable() -> str:
+    """
+    Detect the full path to the Alembic executable.
+
+    Returns
+    -------
+    str
+        The full path to the Alembic executable.
+    """
+    if os.name == "nt":
+        return os.path.join("venv", "Scripts", "alembic.exe")
+    else:
+        return os.path.join("venv", "bin", "alembic")
+
+
+from .constants import (
+    MIGRATIONS_FOLDER,
+    PYTHON_COMMAND,
+    PYTHON_EXECUTABLE,
+    ALEMBIC_EXECUTABLE,
+)
 
 
 def CheckFileModified(filePath: str) -> bool:
@@ -166,6 +186,33 @@ def InstallDependencies(folder: str) -> None:
     CacheFileStamp(os.path.join(folder, "requirements.txt"))
 
 
+def SetupEnvironment(type: str, folder: str) -> None:
+    """
+    Setup the environment by copying the appropriate .env file.
+
+    Parameters
+    ----------
+    type : str
+        The environment type ('dev' or 'prod').
+    folder : str
+        The folder where the .env file should be set up (relative path to source dir).
+    """
+    setupCommand = ""
+
+    assert type in (
+        "dev",
+        "prod",
+        "test",
+    ), "Invalid environment type. Use 'dev' or 'prod' or 'test'."
+
+    if os.name == "nt":
+        setupCommand = f"copy .{type}.env .env"
+    else:
+        setupCommand = f"cp .{type}.env .env"
+
+    RunCommand(setupCommand, folder=folder)
+
+
 def RunServer(type: str = "dev", **kwargs: Any) -> None:
     """
     Run the FastAPI development server with auto-reload.
@@ -175,16 +222,7 @@ def RunServer(type: str = "dev", **kwargs: Any) -> None:
     type : str
         'dev' for development server with auto-reload or 'prod' for production server.
     """
-    setupCommand = ""
-
-    assert type in ("dev", "prod"), "Invalid server type. Use 'dev' or 'prod'."
-
-    if os.name == "nt":
-        setupCommand = f"copy .{type}.env .env"
-    else:
-        setupCommand = f"cp .{type}.env .env"
-
-    RunCommand(setupCommand, folder="ntt_server")
+    SetupEnvironment(type, folder="ntt_server")
     RunCommand(f"{PYTHON_EXECUTABLE} server.py", folder="ntt_server")
 
 
@@ -200,17 +238,61 @@ def RunTests(
     filter : str
         A filter to select specific tests to run.
     """
-    setupCommand = ""
-
-    if os.name == "nt":
-        setupCommand = f"copy .test.env .env"
-    else:
-        setupCommand = f"cp .test.env .env"
-
-    RunCommand(setupCommand, folder="ntt_server")
-
+    SetupEnvironment("test", folder="ntt_server")
     command = f"{PYTHON_EXECUTABLE} -m pytest"
     if filter:
         command += f" -k {filter}"
 
+    RunCommand(command, folder="ntt_server")
+
+
+def RunMigrations(
+    action: str,
+    type: str,
+    rollback_count: int,
+    **kwargs: Any,
+) -> None:
+    """
+    Run database migrations.
+
+    Parameters
+    ----------
+    action : str
+        The migration action to perform ('up', 'down', 'status', 'update').
+    """
+    SetupEnvironment(type, folder="ntt_server")
+    command = ""
+
+    if action == "up":
+        command = f"{ALEMBIC_EXECUTABLE} upgrade head"
+    elif action == "down":
+        command = f"{ALEMBIC_EXECUTABLE} downgrade -{rollback_count}"
+    elif action == "status":
+        assert False
+    else:
+        command = f"{ALEMBIC_EXECUTABLE} revision --autogenerate -m 'auto update'"
+
+    assert command != "", "Invalid migration action."
+
+    RunCommand(command, folder="ntt_server")
+
+
+def CreateMigrationIfNeeded(
+    type: str,
+    **kwargs: Any,
+) -> None:
+    """
+    Create a new migration if there are changes in the models.
+
+    Parameters
+    ----------
+    type : str
+        The environment type ('dev' or 'prod').
+    """
+    if os.path.exists(os.path.join("ntt_server", MIGRATIONS_FOLDER)):
+        return
+
+    SetupEnvironment(type, folder="ntt_server")
+
+    command = f"{ALEMBIC_EXECUTABLE} init {MIGRATIONS_FOLDER}"
     RunCommand(command, folder="ntt_server")

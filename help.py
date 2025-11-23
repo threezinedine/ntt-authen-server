@@ -4,6 +4,8 @@ from config.utils import (
     InstallNewDependencies,
     RunServer,
     RunTests,
+    RunMigrations,
+    CreateMigrationIfNeeded,
 )
 
 
@@ -11,6 +13,7 @@ def main() -> None:
     arg_config = ArgConfig()
 
     InstallDependencies("ntt_server")
+    CreateMigrationIfNeeded(**arg_config.ToDict())
 
     if arg_config.Command == "run":
         RunServer(**arg_config.ToDict())
@@ -18,6 +21,8 @@ def main() -> None:
         InstallNewDependencies(**arg_config.ToDict())
     elif arg_config.Command == "test":
         RunTests(**arg_config.ToDict())
+    elif arg_config.Command == "migrate":
+        RunMigrations(**arg_config.ToDict())
 
 
 if __name__ == "__main__":
