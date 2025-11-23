@@ -12,3 +12,7 @@ class RegisterResponse(BaseModel):
 
 class LoginRequest(RegisterRequest):
     pass
+
+
+class LoginResponse(BaseModel):
+    token: str

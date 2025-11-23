@@ -2,7 +2,11 @@ alembic==1.17.1
 annotated-doc==0.0.3
 annotated-types==0.7.0
 anyio==4.11.0
+argon2-cffi==25.1.0
+argon2-cffi-bindings==25.1.0
+bcrypt==5.0.0
 certifi==2025.10.5
+cffi==2.0.0
 click==8.3.0
 colorlog==6.10.1
 dnspython==2.8.0
@@ -25,7 +29,10 @@ MarkupSafe==3.0.3
 mdurl==0.1.2
 orjson==3.11.4
 packaging==25.0
+passlib==1.7.4
 pluggy==1.6.0
+pwdlib==0.3.0
+pycparser==2.23
 pydantic==2.12.3
 pydantic-extra-types==2.10.6
 pydantic-settings==2.11.0

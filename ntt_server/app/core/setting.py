@@ -4,6 +4,7 @@ from pydantic_settings import BaseSettings
 class ServerSettings(BaseSettings):
     SECRET_KEY: str
     DATABASE_URL: str
+    PASSWORD_SECRET_KEY: str
     ACCESS_TOKEN_EXPIRE_MINUTES: int
     LOG_FILE: str
     MODE: str
